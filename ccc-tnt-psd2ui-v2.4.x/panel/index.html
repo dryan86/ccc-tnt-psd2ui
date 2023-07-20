@@ -1,0 +1,20 @@
+<body>
+    <div id="app">
+        <ui-button id="btn-cache" @click="onClickCache()"> 缓存资源 </ui-button>
+        <ui-checkbox id="is-force-img" style="bottom: 8px;">强制导出图片</ui-checkbox>
+        <ui-checkbox id="is-img-only" style="bottom: 8px;">只导出图片</ui-checkbox>
+
+        <hr />
+        <div style="display: flex;">
+            <div>输出路径（可选）： </div><input id="output" style="width: 200px;" 输出路径>
+        </div>
+        <hr />
+        <div class="layout" @click="onClickDropArea">
+            <ui-drop-area id="drop-area" draggable="true" droppable="file" multi style="text-align: center;">
+                拖入psd文件/文件夹<br />
+                或者<br />
+                点击我选择文件
+            </ui-drop-area>
+        </div>
+    </div>
+</body>
