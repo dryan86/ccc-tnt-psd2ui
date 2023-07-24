@@ -1,7 +1,7 @@
 {
-    "textOffsetY":{
+    "textOffsetY": {
         "default": 0,
         "36": 0
     },
-	"textLineHeightOffset": 0
+    "textLineHeightOffset": 0
 }
