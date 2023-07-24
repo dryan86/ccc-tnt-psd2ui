@@ -149,8 +149,6 @@ function reWritePackage() {
     })
 }
 
-// version = "v3.4.+"
-version = "v2.4.x"
+version = "v3.4.+"
+// version = "v2.4.x"
 taskStart(`${projectName}-${version}`);
-
-console.log(`index-> `, path.join(root, `ccc-tnt-psd2ui-v3.4.+`));
