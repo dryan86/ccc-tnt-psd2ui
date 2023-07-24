@@ -164,6 +164,6 @@ function reWritePackage() {
     })
 }
 
-// version = "v3.4.+"
-version = "v2.4.x"
+version = "v3.4.+"
+// version = "v2.4.x"
 taskStart(`${projectName}-${version}`);
