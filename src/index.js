@@ -71,7 +71,7 @@ function zipFolder(target, output) {
 }
 
 async function taskStart(name) {
-    tmpFolder = path.join(root, `${name}_tmp`);
+    tmpFolder = path.join(root, "release", `${name}-${platform}`);
     await copyPlugin(name);
     await deleteFile("node_modules");
     await copyNodeModules();
@@ -80,6 +80,7 @@ async function taskStart(name) {
     await deleteFile("package-lock.json");
     await reWritePackage();
     await copyNodeJS();
+    await copyMacSH();
     console.log(`创建完成 ${tmpFolder}`);
 
     // fs.mkdirsSync(path.join(root, "release"));
@@ -90,7 +91,7 @@ function copyPlugin(name) {
     return new Promise((resolve, reject) => {
 
         let _path = path.join(root, name);
-        console.log(`拷贝插件文件夹[${_path}]到临时文件夹`);
+        console.log(`拷贝插件文件夹[${_path}]到[${tmpFolder}]`);
         fs.emptyDirSync(tmpFolder);
         fs.copy(_path, tmpFolder, (err) => {
             err ? reject(err) : resolve();
@@ -129,6 +130,20 @@ function copyNodeJS() {
         });
     })
 }
+
+function copyMacSH() {
+    return new Promise((resolve, reject) => {
+        if (OS.platform() !== 'darwin') {
+            resolve();
+        } else {
+            let sh = `install_depends.sh`;
+            fs.copy(path.join(root, "npm-packages", sh), path.join(tmpFolder, sh), (err) => {
+                err ? reject(err) : resolve();
+            });
+        }
+    })
+}
+
 function reWritePackage() {
     return new Promise((resolve, reject) => {
         let packagePath = path.join(tmpFolder, "package.json");
@@ -149,6 +164,6 @@ function reWritePackage() {
     })
 }
 
-version = "v3.4.+"
-// version = "v2.4.x"
+// version = "v3.4.+"
+version = "v2.4.x"
 taskStart(`${projectName}-${version}`);
