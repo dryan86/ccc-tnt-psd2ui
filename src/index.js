@@ -1,11 +1,16 @@
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
 const JSZIP = require('jszip');
 const OS = require('os');
 const child_process = require('child_process');
 
 const root = path.join(__dirname, "../");
+const projectName = "ccc-tnt-psd2ui";
 let tmpFolder = "";
+let platform = OS.platform() == 'darwin' ? "mac" : "win32";
+let version = "v3.4.+";
+// let tag = "x";
+
 // 排除部分文件或文件夹
 const exclude = name => !['@types', 'node_modules'].includes(name)
 
@@ -39,7 +44,7 @@ function readDir(zip, nowPath) {
 }
 
 // 开始压缩文件
-function zipFolder({ target = __dirname, output = __dirname + '/result.zip' }) {
+function zipFolder(target, output) {
     // 创建 zip 实例
     const zip = new JSZIP()
 
@@ -57,74 +62,95 @@ function zipFolder({ target = __dirname, output = __dirname + '/result.zip' }) {
     }).then(content => {
         // 将打包的内容写入 当前目录下的 result.zip中
         fs.writeFileSync(output, content, 'utf-8')
+        console.log(`index-> `);
+
+    }).catch((err) => {
+        console.log(`index-> `, err);
+
+    });
+}
+
+async function taskStart(name) {
+    tmpFolder = path.join(root, `${name}_tmp`);
+    await copyPlugin(name);
+    await deleteFile("node_modules");
+    await copyNodeModules();
+    await deleteFile("@types");
+    await deleteFile("src");
+    await deleteFile("package-lock.json");
+    await reWritePackage();
+    await copyNodeJS();
+    console.log(`创建完成 ${tmpFolder}`);
+
+    // fs.mkdirsSync(path.join(root, "release"));
+    // zipFolder(tmpFolder, path.join(root, "release", `${name}-${tag}.zip`));
+}
+
+function copyPlugin(name) {
+    return new Promise((resolve, reject) => {
+
+        let _path = path.join(root, name);
+        console.log(`拷贝插件文件夹[${_path}]到临时文件夹`);
+        fs.emptyDirSync(tmpFolder);
+        fs.copy(_path, tmpFolder, (err) => {
+            err ? reject(err) : resolve();
+        });
     })
 }
 
-// zipFolder({ 
-//     // 目标文件夹
-//     target: path.join(__dirname, 'test'), 
-//     // 输出 zip 
-//     output: __dirname + '/result.zip' 
-// })
-
-
-console.log(`index-> `, path.join(__dirname, "../", 'ccc-tnt-psd2ui-v3.4.+'));
-
-
-function taskStart(name, callback) {
-    tmpFolder = path.join(root, `${name}_tmp`);
-    callback(name);
-}
-
-function copyPlguin(name, callback) {
-
-    fs.copyFile(path.join(root, name), tmpFolder, () => {
-        callback(name);
-    });
-}
-
-function cd2TmpFolder(name, callback) {
-
-    child_process.exec(`cd ${tmpFolder}`, (err, stdout, stderr) => {
-        console.log(stdout);
-        console.log(stderr);
-        if (err) {
-            console.log(`child_process err-> `, err);
-        } else {
-            callback(name);
+function deleteFile(folderName) {
+    return new Promise((resolve, reject) => {
+        let node_modules = path.join(tmpFolder, folderName);
+        if (!fs.existsSync(node_modules)) {
+            resolve();
+            return;
         }
-    });
+        fs.remove(node_modules, (err) => {
+            err ? reject(err) : resolve();
+        });
+    })
 }
 
-function unstallPackage(name, callback, packageNames) {
-    for (let i = 0; i < packageNames.length; i++) {
-        const element = packageNames[i];
-        child_process.exec(`npm uninstall ${element}`, (err, stdout, stderr) => {
-            console.log(stdout);
-            console.log(stderr);
+function copyNodeModules() {
+    return new Promise((resolve, reject) => {
+        let node_modules = path.join(tmpFolder, "node_modules");
+        fs.copy(path.join(root, "npm-packages", `${platform}-${version}`), node_modules, (err) => {
+            err ? reject(err) : resolve();
+        });
+    })
+}
+function copyNodeJS() {
+    return new Promise((resolve, reject) => {
+        let bin = path.join(tmpFolder, "bin");
+        fs.emptyDirSync(bin);
+        let nodejs = `node${OS.platform() == 'win32' ? ".exe" : ""}`;
+        fs.copy(path.join(root, `node`, nodejs), path.join(bin, nodejs), (err) => {
+            err ? reject(err) : resolve();
+        });
+    })
+}
+function reWritePackage() {
+    return new Promise((resolve, reject) => {
+        let packagePath = path.join(tmpFolder, "package.json");
+        fs.readJson(packagePath, (err, data) => {
             if (err) {
-                console.log(`child_process err-> `, err);
-            } else {
-                if (i == packageNames.length - 1) {
-                    callback(name);
-                }
+                reject(err);
+                return;
             }
+            let obj = data;
+            delete obj["devDependencies"];
+            fs.writeJson(packagePath, obj, {
+                spaces: 4,
+                encoding: 'utf-8'
+            }, (err) => {
+                err ? reject(err) : resolve();
+            });
         });
-    }
+    })
 }
 
-taskStart("ccc-tnt-psd2ui-v3.4.+", (name) => {
-    copyPlguin(name, (name) => {
-        cd2TmpFolder(name, (name) => {
-            // unstallPackage(name, (name) => {
+// version = "v3.4.+"
+version = "v2.4.x"
+taskStart(`${projectName}-${version}`);
 
-            // }, [
-            //     "@types/fs-extra",
-            //     "@types/node",
-            //     "typescript"
-            // ]);
-        });
-    });
-});
-
-console.log(`index-> `, root);
+console.log(`index-> `, path.join(root, `ccc-tnt-psd2ui-v3.4.+`));

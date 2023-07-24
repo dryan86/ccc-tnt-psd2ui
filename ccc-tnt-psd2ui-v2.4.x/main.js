@@ -1,32 +1,56 @@
 'use strict';
 const Electron = require('electron');
+const packageJSON = require('./package.json');
 let fs = require('fs');
 const path = require("path")
-const packageJSON = require('./package.json');
+const Os = require('os');
 let child_process = require('child_process');
 let exec = child_process.exec;
 let spawn = child_process.spawn;
 
 
 
-const ENGINE_VER = "v249"; // 参数超过了 10 个，这里暂时省略掉 版本号参数
+const ENGINE_VER = "v249";
+const packagePath = path.join(Editor.Project.path, "packages", packageJSON.name);
 const projectAssets = path.join(Editor.Project.path, "assets");
 const cacheFile = path.join(Editor.Project.path, "local", "psd-to-prefab-cache.json");
-const commandBat = path.join(Editor.Project.path, `packages\\${packageJSON.name}\\libs\\psd2ui\\command.bat`);
-const configFile = path.join(Editor.Project.path, `packages\\${packageJSON.name}\\config\\psd.config.json`);
+const configFile = path.join(`${packagePath}/config/psd.config.json`);
+
+
+const nodejsFile = path.join(packagePath, "bin", `node${Os.platform() == 'darwin' ? "" : ".exe"}`);
+const psd = path.join(packagePath, "libs", "psd2ui", "index.js");
+
 let uuid2md5 = new Map();
 let cacheFileJson = {};
 
 
 function _exec(options, tasks) {
+
     let jsonContent = JSON.stringify(options);
+    if (!fs.existsSync(nodejsFile)) {
+        Editor.log(`[ccc-tnt-psd2ui] 没有内置 nodejs`, nodejsFile);
 
-    console.log("批处理命令参数：" + jsonContent);
+        return tasks;
+    }
+    // 处理权限问题
+    if (Os.platform() === 'darwin') {
+        if (fs.statSync(nodejsFile).mode != 33261) {
+            Editor.log(`[ccc-tnt-psd2ui] 设置权限`);
+            fs.chmodSync(nodejsFile, 33261);
+        }
+    }
+
+    Editor.log("[ccc-tnt-psd2ui] 命令参数：" + jsonContent);
+    Editor.log("[ccc-tnt-psd2ui] 命令执行中");
+
     let base64 = Buffer.from(jsonContent).toString("base64");
-
-    console.log('start ' + commandBat + ' ' + `--json ${base64}`);
     tasks.push(new Promise((rs) => {
-        exec('start ' + commandBat + ' ' + `--json ${base64}`, { windowsHide: false }, (err, stdout, stderr) => {
+        // Editor.log(`[ccc-tnt-psd2ui] `, `${nodejsFile} ${psd}` + ' ' + `--json ${base64}`);
+        exec(`${nodejsFile} ${psd}` + ' ' + `--json ${base64}`, { windowsHide: false }, (err, stdout, stderr) => {
+            Editor.log("[ccc-tnt-psd2ui]:\n", stdout);
+            if (stderr) {
+                Editor.log(stderr);
+            }
             rs();
         })
     }));
@@ -61,8 +85,8 @@ function onAssetDeletedListener(event, args) {
             delete cacheFileJson[`${md5}`];
         }
     }
-    
-    if(rewrite){
+
+    if (rewrite) {
         fs.writeFileSync(cacheFile, JSON.stringify(cacheFileJson, null, 2));
     }
 }
@@ -139,10 +163,14 @@ module.exports = {
                 _exec(args, tasks)
             }
 
-            await Promise.all(tasks);
-            genUUID2MD5Mapping();
-            Editor.log("[ccc-tnt-psd2ui]  psd 导出完成，输出位置为：", output ? output : "psd 同级目录");
-            event.reply(null, true);
+            Promise.all(tasks).then(() => {
+                genUUID2MD5Mapping();
+                Editor.log("[ccc-tnt-psd2ui]  psd 导出完成，输出位置为：", output ? output : "psd 同级目录");
+            }).catch((reason) => {
+                Editor.log("[ccc-tnt-psd2ui]  导出失败", reason);
+            }).finally(() => {
+                event.reply(null, true);
+            });
         },
 
         'open'() {
@@ -156,7 +184,10 @@ module.exports = {
                 "init": true,
             }
             Promise.all(_exec(options, [])).then(() => {
-                console.log("[ccc-tnt-psd2ui]  执行缓存结束");
+                Editor.log("[ccc-tnt-psd2ui]  执行缓存结束");
+            }).catch(() => {
+                Editor.log("[ccc-tnt-psd2ui]  执行缓存失败");
+            }).finally(() => {
                 event.reply(null, true);
             });
         },
