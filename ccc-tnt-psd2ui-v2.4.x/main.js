@@ -124,12 +124,14 @@ module.exports = {
             let files = param.files;
             let isForceImg = param.isForceImg;
             let isImgOnly = param.isImgOnly;
-            let output = param.output
+            let output = param.output;
+            let isPinyin = param.isPinyin;
 
             let options = {
                 "project-assets": projectAssets,
                 "cache": cacheFile,
                 "engine-version": ENGINE_VER,
+                "pinyin": isPinyin,
             }
 
             let tasks = [];

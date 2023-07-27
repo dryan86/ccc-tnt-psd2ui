@@ -25,6 +25,7 @@ Editor.Panel.extend({
                 isImgOnly: false,
                 isForceImg: false,
                 isProcessing: false,
+                isPinyin: true,
             },
 
 
@@ -44,6 +45,13 @@ Editor.Panel.extend({
                     onlyImg.addEventListener('change', () => {
                         this.isImgOnly = !this.isImgOnly;
                     });
+
+
+                    let pinyin = root.getElementById("is-pinyin")
+                    pinyin.addEventListener('change', () => {
+                        this.isPinyin = !this.isPinyin;
+                    });
+
 
                     let str = localStorage.getItem(`${Editor.Project.name}_psd2ui_output`);
                     if (str) {
@@ -90,7 +98,7 @@ Editor.Panel.extend({
                         // Editor.
                         return;
                     }
-                    
+
                     let result = Editor.Dialog.openFile({
                         'multi': true,
                         'type': "file",
@@ -113,7 +121,7 @@ Editor.Panel.extend({
                     let output = outputInput.value;
                     // 
                     this.isProcessing = true;
-                    Editor.Ipc.sendToMain('ccc-tnt-psd2ui:on-drop-file', { output, files, isForceImg: this.isForceImg, isImgOnly: this.isImgOnly }, (err) => {
+                    Editor.Ipc.sendToMain('ccc-tnt-psd2ui:on-drop-file', { output, files, isForceImg: this.isForceImg, isImgOnly: this.isImgOnly, isPinyin: this.isPinyin }, (err) => {
                         this.isProcessing = false;
 
                     });
