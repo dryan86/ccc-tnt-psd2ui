@@ -1,4 +1,4 @@
-export type BlendMode = 'pass through' | 'normal' | 'dissolve' | 'darken' | 'multiply' | 'color burn' | 'linear burn' | 'darker color' | 'lighten' | 'screen' | 'color dodge' | 'linear dodge' | 'lighter color' | 'overlay' | 'soft light' | 'hard light' | 'vivid light' | 'linear light' | 'pin light' | 'hard mix' | 'difference' | 'exclusion' | 'subtract' | 'divide' | 'hue' | 'saturation' | 'color' | 'luminosity';
+export declare type BlendMode = 'pass through' | 'normal' | 'dissolve' | 'darken' | 'multiply' | 'color burn' | 'linear burn' | 'darker color' | 'lighten' | 'screen' | 'color dodge' | 'linear dodge' | 'lighter color' | 'overlay' | 'soft light' | 'hard light' | 'vivid light' | 'linear light' | 'pin light' | 'hard mix' | 'difference' | 'exclusion' | 'subtract' | 'divide' | 'hue' | 'saturation' | 'color' | 'luminosity';
 export declare const enum ColorMode {
     Bitmap = 0,
     Grayscale = 1,
@@ -15,42 +15,37 @@ export declare const enum SectionDividerType {
     ClosedFolder = 2,
     BoundingSectionDivider = 3
 }
-export type RGBA = {
+export declare type RGBA = {
     r: number;
     g: number;
     b: number;
     a: number;
 };
-export type RGB = {
+export declare type RGB = {
     r: number;
     g: number;
     b: number;
 };
-export type FRGB = {
-    fr: number;
-    fg: number;
-    fb: number;
-};
-export type HSB = {
+export declare type HSB = {
     h: number;
     s: number;
     b: number;
 };
-export type CMYK = {
+export declare type CMYK = {
     c: number;
     m: number;
     y: number;
     k: number;
 };
-export type LAB = {
+export declare type LAB = {
     l: number;
     a: number;
     b: number;
 };
-export type Grayscale = {
+export declare type Grayscale = {
     k: number;
 };
-export type Color = RGBA | RGB | FRGB | HSB | CMYK | LAB | Grayscale;
+export declare type Color = RGBA | RGB | HSB | CMYK | LAB | Grayscale;
 export interface EffectContour {
     name: string;
     curve: {
@@ -251,25 +246,24 @@ export interface LayerMaskData {
     canvas?: HTMLCanvasElement;
     imageData?: ImageData;
 }
-export type TextGridding = 'none' | 'round';
-export type Orientation = 'horizontal' | 'vertical';
-export type AntiAlias = 'none' | 'sharp' | 'crisp' | 'strong' | 'smooth' | 'platform' | 'platformLCD';
-export type WarpStyle = 'none' | 'arc' | 'arcLower' | 'arcUpper' | 'arch' | 'bulge' | 'shellLower' | 'shellUpper' | 'flag' | 'wave' | 'fish' | 'rise' | 'fisheye' | 'inflate' | 'squeeze' | 'twist' | 'custom' | 'cylinder';
-export type BevelStyle = 'outer bevel' | 'inner bevel' | 'emboss' | 'pillow emboss' | 'stroke emboss';
-export type BevelTechnique = 'smooth' | 'chisel hard' | 'chisel soft';
-export type BevelDirection = 'up' | 'down';
-export type GlowTechnique = 'softer' | 'precise';
-export type GlowSource = 'edge' | 'center';
-export type GradientStyle = 'linear' | 'radial' | 'angle' | 'reflected' | 'diamond';
-export type Justification = 'left' | 'right' | 'center';
-export type LineCapType = 'butt' | 'round' | 'square';
-export type LineJoinType = 'miter' | 'round' | 'bevel';
-export type LineAlignment = 'inside' | 'center' | 'outside';
-export type InterpolationMethod = 'classic' | 'perceptual' | 'linear';
+export declare type TextGridding = 'none' | 'round';
+export declare type Orientation = 'horizontal' | 'vertical';
+export declare type AntiAlias = 'none' | 'sharp' | 'crisp' | 'strong' | 'smooth' | 'platform' | 'platformLCD';
+export declare type WarpStyle = 'none' | 'arc' | 'arcLower' | 'arcUpper' | 'arch' | 'bulge' | 'shellLower' | 'shellUpper' | 'flag' | 'wave' | 'fish' | 'rise' | 'fisheye' | 'inflate' | 'squeeze' | 'twist' | 'custom';
+export declare type BevelStyle = 'outer bevel' | 'inner bevel' | 'emboss' | 'pillow emboss' | 'stroke emboss';
+export declare type BevelTechnique = 'smooth' | 'chisel hard' | 'chisel soft';
+export declare type BevelDirection = 'up' | 'down';
+export declare type GlowTechnique = 'softer' | 'precise';
+export declare type GlowSource = 'edge' | 'center';
+export declare type GradientStyle = 'linear' | 'radial' | 'angle' | 'reflected' | 'diamond';
+export declare type Justification = 'left' | 'right' | 'center';
+export declare type LineCapType = 'butt' | 'round' | 'square';
+export declare type LineJoinType = 'miter' | 'round' | 'bevel';
+export declare type LineAlignment = 'inside' | 'center' | 'outside';
+export declare type InterpolationMethod = 'classic' | 'perceptual' | 'linear';
 export interface Warp {
     style?: WarpStyle;
     value?: number;
-    values?: number[];
     perspective?: number;
     perspectiveOther?: number;
     rotate?: Orientation;
@@ -431,7 +425,7 @@ export interface BezierKnot {
     linked: boolean;
     points: number[];
 }
-export type BooleanOperation = 'exclude' | 'combine' | 'subtract' | 'intersect';
+export declare type BooleanOperation = 'exclude' | 'combine' | 'subtract' | 'intersect';
 export interface BezierPath {
     open: boolean;
     operation: BooleanOperation;
@@ -456,14 +450,14 @@ export interface ExtraPatternInfo {
         y: number;
     };
 }
-export type VectorContent = {
+export declare type VectorContent = {
     type: 'color';
     color: Color;
 } | (EffectSolidGradient & ExtraGradientInfo) | (EffectNoiseGradient & ExtraGradientInfo) | (EffectPattern & {
     type: 'pattern';
 } & ExtraPatternInfo);
-export type RenderingIntent = 'perceptual' | 'saturation' | 'relative colorimetric' | 'absolute colorimetric';
-export type Units = 'Pixels' | 'Points' | 'Picas' | 'Millimeters' | 'Centimeters' | 'Inches' | 'None' | 'Density';
+export declare type RenderingIntent = 'perceptual' | 'saturation' | 'relative colorimetric' | 'absolute colorimetric';
+export declare type Units = 'Pixels' | 'Points' | 'Picas' | 'Millimeters' | 'Centimeters' | 'Inches' | 'None' | 'Density';
 export interface UnitsValue {
     units: Units;
     value: number;
@@ -495,7 +489,7 @@ export interface LevelsAdjustment extends PresetInfo {
     green?: LevelsAdjustmentChannel;
     blue?: LevelsAdjustmentChannel;
 }
-export type CurvesAdjustmentChannel = {
+export declare type CurvesAdjustmentChannel = {
     input: number;
     output: number;
 }[];
@@ -648,7 +642,7 @@ export interface LinkedFile {
     type?: string;
     creator?: string;
     data?: Uint8Array;
-    time?: string;
+    time?: Date;
     descriptor?: {
         compInfo: {
             compID: number;
@@ -659,87 +653,7 @@ export interface LinkedFile {
     assetModTime?: number;
     assetLockedState?: number;
 }
-export interface PlacedLayerFilter {
-    enabled: boolean;
-    validAtPosition: boolean;
-    maskEnabled: boolean;
-    maskLinked: boolean;
-    maskExtendWithWhite: boolean;
-    list: {
-        id: number;
-        name: string;
-        opacity: number;
-        blendMode: BlendMode;
-        enabled: boolean;
-        hasOptions: boolean;
-        foregroundColor: Color;
-        backgroundColor: Color;
-        filter: {
-            rigidType: boolean;
-            bounds: {
-                x: number;
-                y: number;
-            }[];
-            puppetShapeList: {
-                rigidType: boolean;
-                originalVertexArray: {
-                    x: number;
-                    y: number;
-                }[];
-                deformedVertexArray: {
-                    x: number;
-                    y: number;
-                }[];
-                indexArray: number[];
-                pinOffsets: {
-                    x: number;
-                    y: number;
-                }[];
-                posFinalPins: {
-                    x: number;
-                    y: number;
-                }[];
-                pinVertexIndices: number[];
-                selectedPin: number[];
-                pinPosition: {
-                    x: number;
-                    y: number;
-                }[];
-                pinRotation: number[];
-                pinOverlay: boolean[];
-                pinDepth: number[];
-                meshQuality: number;
-                meshExpansion: number;
-                meshRigidity: number;
-                imageResolution: number;
-                meshBoundaryPath: {
-                    pathComponents: {
-                        shapeOperation: string;
-                        paths: {
-                            closed: boolean;
-                            points: {
-                                anchor: {
-                                    x: UnitsValue;
-                                    y: UnitsValue;
-                                };
-                                forward: {
-                                    x: UnitsValue;
-                                    y: UnitsValue;
-                                };
-                                backward: {
-                                    x: UnitsValue;
-                                    y: UnitsValue;
-                                };
-                                smooth: boolean;
-                            }[];
-                        }[];
-                    }[];
-                };
-            }[];
-        };
-    }[];
-}
-export type PlacedLayerType = 'unknown' | 'vector' | 'raster' | 'image stack';
+export declare type PlacedLayerType = 'unknown' | 'vector' | 'raster' | 'image stack';
 export interface PlacedLayer {
     id: string;
     placed?: string;
@@ -767,10 +681,9 @@ export interface PlacedLayer {
         compID: number;
         originalCompID: number;
     };
-    filter?: PlacedLayerFilter;
 }
-export type AdjustmentLayer = BrightnessAdjustment | LevelsAdjustment | CurvesAdjustment | ExposureAdjustment | VibranceAdjustment | HueSaturationAdjustment | ColorBalanceAdjustment | BlackAndWhiteAdjustment | PhotoFilterAdjustment | ChannelMixerAdjustment | ColorLookupAdjustment | InvertAdjustment | PosterizeAdjustment | ThresholdAdjustment | GradientMapAdjustment | SelectiveColorAdjustment;
-export type LayerColor = 'none' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'gray';
+export declare type AdjustmentLayer = BrightnessAdjustment | LevelsAdjustment | CurvesAdjustment | ExposureAdjustment | VibranceAdjustment | HueSaturationAdjustment | ColorBalanceAdjustment | BlackAndWhiteAdjustment | PhotoFilterAdjustment | ChannelMixerAdjustment | ColorLookupAdjustment | InvertAdjustment | PosterizeAdjustment | ThresholdAdjustment | GradientMapAdjustment | SelectiveColorAdjustment;
+export declare type LayerColor = 'none' | 'red' | 'orange' | 'yellow' | 'green' | 'blue' | 'violet' | 'gray';
 export interface KeyDescriptorItem {
     keyShapeInvalidated?: boolean;
     keyOriginType?: number;
@@ -825,8 +738,8 @@ export interface Fraction {
     numerator: number;
     denominator: number;
 }
-export type TimelineKeyInterpolation = 'linear' | 'hold';
-export type TimelineKey = {
+export declare type TimelineKeyInterpolation = 'linear' | 'hold';
+export declare type TimelineKey = {
     interpolation: TimelineKeyInterpolation;
     time: Fraction;
     selected?: boolean;
@@ -860,7 +773,7 @@ export type TimelineKey = {
     globalAngle: number;
     globalAltitude: number;
 });
-export type TimelineTrackType = 'opacity' | 'style' | 'sheetTransform' | 'sheetPosition' | 'globalLighting';
+export declare type TimelineTrackType = 'opacity' | 'style' | 'sheetTransform' | 'sheetPosition' | 'globalLighting';
 export interface TimelineTrack {
     type: TimelineTrackType;
     enabled?: boolean;
@@ -972,7 +885,6 @@ export interface LayerAdditionalInfo {
         unifyLayerVisibility?: boolean;
     };
     timeline?: Timeline;
-    filterEffects?: any;
     engineData?: string;
 }
 export interface ImageResources {
@@ -993,11 +905,7 @@ export interface ImageResources {
     pixelAspectRatio?: {
         aspect: number;
     };
-    urlsList?: {
-        id: number;
-        ref: 'slice';
-        url: string;
-    }[];
+    urlsList?: any[];
     gridAndGuidesInformation?: {
         grid?: {
             horizontal: number;
@@ -1117,54 +1025,6 @@ export interface ImageResources {
             materialsDisclosed: boolean;
         }[];
     };
-    countInformation?: {
-        color: RGB;
-        name: string;
-        size: number;
-        fontSize: number;
-        visible: boolean;
-        points: {
-            x: number;
-            y: number;
-        }[];
-    }[];
-    slices?: {
-        bounds: {
-            left: number;
-            top: number;
-            right: number;
-            bottom: number;
-        };
-        groupName: string;
-        slices: {
-            id: number;
-            groupId: number;
-            origin: 'userGenerated' | 'autoGenerated' | 'layer';
-            associatedLayerId: number;
-            name: string;
-            type: 'image' | 'noImage';
-            bounds: {
-                left: number;
-                top: number;
-                right: number;
-                bottom: number;
-            };
-            url: string;
-            target: string;
-            message: string;
-            altTag: string;
-            cellTextIsHTML: boolean;
-            cellText: string;
-            horizontalAlignment: 'default';
-            verticalAlignment: 'default';
-            backgroundColorType: 'none' | 'matte' | 'color';
-            backgroundColor: RGBA;
-            topOutset?: number;
-            leftOutset?: number;
-            bottomOutset?: number;
-            rightOutset?: number;
-        }[];
-    }[];
 }
 export interface GlobalLayerMaskInfo {
     overlayColorSpace: number;

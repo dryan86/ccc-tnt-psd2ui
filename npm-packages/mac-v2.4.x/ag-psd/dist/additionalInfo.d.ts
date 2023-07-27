@@ -5,9 +5,9 @@ export interface ExtendedWriteOptions extends WriteOptions {
     layerIds: Set<number>;
     layerToId: Map<any, number>;
 }
-type HasMethod = (target: LayerAdditionalInfo) => boolean;
-type ReadMethod = (reader: PsdReader, target: LayerAdditionalInfo, left: () => number, psd: Psd, options: ReadOptions) => void;
-type WriteMethod = (writer: PsdWriter, target: LayerAdditionalInfo, psd: Psd, options: ExtendedWriteOptions) => void;
+declare type HasMethod = (target: LayerAdditionalInfo) => boolean;
+declare type ReadMethod = (reader: PsdReader, target: LayerAdditionalInfo, left: () => number, psd: Psd, options: ReadOptions) => void;
+declare type WriteMethod = (writer: PsdWriter, target: LayerAdditionalInfo, psd: Psd, options: ExtendedWriteOptions) => void;
 export interface InfoHandler {
     key: string;
     has: HasMethod;

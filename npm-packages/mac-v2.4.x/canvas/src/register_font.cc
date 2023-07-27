@@ -264,7 +264,7 @@ get_pango_font_description(unsigned char* filepath) {
         FILE_SHARE_READ,
         NULL,
         OPEN_EXISTING,
-        FILE_ATTRIBUTE_NORMAL,
+        NULL,
         NULL
   );
   if(!hFile){

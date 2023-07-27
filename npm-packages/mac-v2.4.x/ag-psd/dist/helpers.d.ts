@@ -73,7 +73,7 @@ export interface LayerChannelData {
     bottom: number;
     mask?: Bounds;
 }
-export type PixelArray = Uint8ClampedArray | Uint8Array;
+export declare type PixelArray = Uint8ClampedArray | Uint8Array;
 export interface PixelData {
     data: PixelArray;
     width: number;
