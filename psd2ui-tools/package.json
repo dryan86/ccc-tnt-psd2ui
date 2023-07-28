@@ -1,0 +1,43 @@
+{
+  "name": "psd2ui",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -b",
+    "watch": "tsc -w",
+    "rollup": "rollup -c",
+    "test": "node dist/index.js --input ./test/normal-test.psd --cache-remake --output ./out/",
+    "help": "node dist/index.js --h",
+    "test-dir": "node dist/index.js --input E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\test --output E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\out --cache E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\cache\\cache.json",
+    "test-psd": "node dist/index.js --input E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\test\\normal-test.psd --output E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\out --cache E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\cache\\cache.json",
+    "test-cache": "node dist/index.js --input E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\test\\normal-test.psd --output E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\out --cache E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\cache\\cache.json --project-assets E:\\Demo\\CC249JSTest\\assets --cache-remake",
+    "test-dir-no-output": "node dist/index.js --input E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\test --cache E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\cache\\cache.json",
+    "test-psd-no-output": "node dist/index.js --input E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\test\\normal-test.psd --cache E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\cache\\cache.json",
+    "test-init": "node dist/index.js --init --project-assets E:\\Demo\\CC249JSTest\\assets --cache E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\cache\\cache.json",
+    "test-png9": "ts-node src/index.ts --engine-version v342 --pinyin --input ./test/png9.psd --output ./out/",
+    "test-png9-2": "node dist/index.js --engine-version v342 --pinyin --input ./test/png9.psd --output ./out/"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ag-psd": "^15.0.0",
+    "canvas": "^2.10.2",
+    "fs-extra": "^10.1.0",
+    "minimist": "^1.2.7",
+    "pinyin-pro": "^3.16.0"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.3",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-typescript": "^11.1.2",
+    "@types/fs-extra": "^9.0.13",
+    "@types/node": "^18.11.9",
+    "cross-env": "^7.0.3",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.35.0",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.6.0"
+  }
+}
