@@ -245,6 +245,12 @@ export abstract class PsdLayer {
         if (!text || !PsdLayer.isPinyin) {
             return text;
         }
+
+        let reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
+        if (!reg.test(text)) {
+            return text;
+        }
+
         let names = pinyin(text, {
             toneType: "none",
             type: "array"
