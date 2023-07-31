@@ -18,6 +18,7 @@ const configFile = path.join(`${packagePath}/config/psd.config.json`);
 
 
 const nodejsFile = path.join(packagePath, "bin", `node${Os.platform() == 'darwin' ? "" : ".exe"}`);
+const commandFile = path.join(packagePath, "libs", "psd2ui", `command.${Os.platform() == 'darwin' ? "sh" : "bat"}`);
 const psd = path.join(packagePath, "libs", "psd2ui", "index.js");
 
 let uuid2md5 = new Map();
@@ -35,8 +36,12 @@ function _exec(options, tasks) {
     // 处理权限问题
     if (Os.platform() === 'darwin') {
         if (fs.statSync(nodejsFile).mode != 33261) {
-            Editor.log(`[ccc-tnt-psd2ui] 设置权限`);
+            Editor.log(`[ccc-tnt-psd2ui] nodejsFile 设置权限`);
             fs.chmodSync(nodejsFile, 33261);
+        }
+        if (fs.statSync(commandFile).mode != 33261) {
+            Editor.log(`[ccc-tnt-psd2ui] commandFile 设置权限`);
+            fs.chmodSync(commandFile, 33261);
         }
     }
 
@@ -46,13 +51,29 @@ function _exec(options, tasks) {
     let base64 = Buffer.from(jsonContent).toString("base64");
     tasks.push(new Promise((rs) => {
         // Editor.log(`[ccc-tnt-psd2ui] `, `${nodejsFile} ${psd}` + ' ' + `--json ${base64}`);
-        exec(`${nodejsFile} ${psd}` + ' ' + `--json ${base64}`, { windowsHide: false }, (err, stdout, stderr) => {
+        // exec(`${nodejsFile} ${psd}` + ' ' + `--json ${base64}`, { windowsHide: false }, (err, stdout, stderr) => {
+        //     Editor.log("[ccc-tnt-psd2ui]:\n", stdout);
+        //     if (stderr) {
+        //         Editor.log(stderr);
+        //     }
+        //     rs();
+        // })
+        
+        let shellScript = commandFile;  // 你的脚本路径
+        let scriptArgs = `--json ${base64}`;  // 你的脚本参数
+
+        let command =
+        Os.platform() == 'darwin' ? `osascript -e 'tell app "Terminal" to do script "cd ${process.cwd()}; ${shellScript} ${scriptArgs}"'`
+        : `start ${commandFile} ${scriptArgs}`;
+
+        exec(command, (error, stdout, stderr) => {
             Editor.log("[ccc-tnt-psd2ui]:\n", stdout);
+            Editor.log("[ccc-tnt-psd2ui]: 程序执行完后请手动关闭终端窗口", );
             if (stderr) {
                 Editor.log(stderr);
             }
             rs();
-        })
+        });
     }));
     return tasks;
 }
