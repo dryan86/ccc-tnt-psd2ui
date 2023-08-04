@@ -31,6 +31,17 @@
 ### Mac 用户请注意！！！！
 Mac 下首次使用需要先执行根目录下的 `install_depends.sh` 安装 `canvas` 所需要的依赖，如果安装错误 请根据 `https://github.com/Automattic/node-canvas` 手动安装
 
+如果出现 `Bad CPU type in executable canvas` 的报错，按照下面步骤进行处理。
+
+1. 卸载 canvas ，在这个插件目录下执行 `npm uninstall canvas`
+2. 重新安装 canvas，`npm i canvas`
+
+如果你 NodeJS 是 16.14.0 版本 ,执行完上面命令之后重新打开插件应该就可以了。
+如果 NodeJS 不是16.14.0 版本，可以使用 nvm 安装一下 16.14.0。
+或者你可以在执行完上面的命令之后，修改一下 libs/psd2ui/command.sh 
+里面 `$(dirname $(dirname $cur_dir))/bin/node` 删除前面的 `$(dirname $(dirname $cur_dir))/bin/` 只保留 node
+
+
 
 #### 界面说明
 
