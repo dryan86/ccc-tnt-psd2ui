@@ -23,6 +23,6 @@ module.exports = {
         json(),
         // resolve(),
         commonjs(),
-        terser()
+        // terser()
     ]
 }

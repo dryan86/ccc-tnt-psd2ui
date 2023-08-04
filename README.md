@@ -55,11 +55,7 @@ Mac 下首次使用需要先执行根目录下的 `install_depends.sh` 安装 `c
 
 <a href="#ar"> @ar 锚点</a>
 
-<a href="#size"> @size 尺寸</a>
-
 <a href="#full"> @full 全屏</a>
-
-<a href="#scale"> @scale 缩放</a>
 
 <a href="#ignore"> @ignore | @ig 忽略导出图片和节点</a>
 
@@ -74,6 +70,11 @@ Mac 下首次使用需要先执行根目录下的 `install_depends.sh` 安装 `c
 <a href="#flipX"> @flipX 翻转图像 (flip 变种)</a>
 
 <a href="#flipY"> @flipY 翻转图像 (flip 变种)</a>
+
+### 移除
+~~<a href="#size"> @size 尺寸</a>~~
+
+~~<a href="#scale"> @scale 缩放</a>~~
 
 
 
@@ -143,20 +144,7 @@ check 为 Toggle 的属性，类型为 Sprite
 
 ```
 
-<a id="size"></a>
-```
-@size{w:100,h:100}
 
-节点尺寸 非图片尺寸
-作用图层: 所有图层
-
-参数：
-    w?: 宽
-    h?: 高
-    只对填写的参数生效，未填写的则为计算到的值
-    无参数不生效
-    
-```
 
 <a id="full"></a>
 ```
@@ -165,20 +153,6 @@ check 为 Toggle 的属性，类型为 Sprite
 节点设置为全屏尺寸
 作用图层: 组图层
 
-```
-
-<a id="scale"></a>
-```
-@scale{x:1,y:1}
-
-节点缩放
-作用图层: 所有图层
-
-参数：
-    x?: x 方向
-    y?: y 方向
-    只对填写的参数生效，未填写的则为 1 
-    
 ```
 
 <a id="ignore"></a>
@@ -210,7 +184,7 @@ check 为 Toggle 的属性，类型为 Sprite
 
 <a id="img"></a>
 ```
-@img{name: string,id: 0,bind: 0}
+@img{name:string,id:number,bind:number}
 
 定制图片
 作用图层：图像图层
@@ -266,10 +240,45 @@ flip 的变种 y 方向镜像图像vv
     @flipY 的图层不会导出图像
 ```
 
+---
+---
+---
+### 移除
+<a id="size"></a>
+```
+@size{w:100,h:100}
 
+节点尺寸 非图片尺寸
+作用图层: 所有图层
+
+参数：
+    w?: 宽
+    h?: 高
+    只对填写的参数生效，未填写的则为计算到的值
+    无参数不生效
+    
+```
+
+<a id="scale"></a>
+```
+@scale{x:1,y:1}
+
+节点缩放
+作用图层: 所有图层
+
+参数：
+    x?: x 方向
+    y?: y 方向
+    只对填写的参数生效，未填写的则为 1 
+    
+```
+---
+---
+---
 
 ### 说明
     多个字段可作用在同一个图层上，按需使用
+    为做到所见所得，移除手动设置 @size 和 @scale，修改为自动计算，使用方式为 `@img{bind:目标id}` `@flipX{bind:目标id}` `@flipY{bind:目标id}`
 
 
 

@@ -40,8 +40,8 @@ export interface PsdAttr {
         igimg?: {};
 
         full?: {};
-        size?: { w?: number, h?: number };
-        scale?: { x?: number, y?: number };
+        // size?: { w?: number, h?: number };
+        // scale?: { x?: number, y?: number };
         img?: { id?: number, name?: string, bind?: number }
         flip?: { bind: number, x?: number, y?: number }
         flipX?: { bind: number }
@@ -93,8 +93,9 @@ export abstract class PsdLayer {
         this.name = this.chineseToPinyin(this.attr?.name || this.name);
 
         // 使用配置的缩放系数
-        let _scale = this.attr?.comps.scale;
-        this.scale = new Vec3(_scale?.x ?? 1, _scale?.y ?? 1, 1);
+        // let _scale = this.attr?.comps.scale;
+        // this.scale = new Vec3(_scale?.x ?? 1, _scale?.y ?? 1, 1);
+        this.scale = new Vec3(1, 1, 1);
     }
 
     abstract onCtor();
@@ -195,10 +196,10 @@ export abstract class PsdLayer {
         }
 
 
-        // 检查冲突
-        if (obj.comps.full && obj.comps.size) {
-            console.warn(`PsdLayer->${obj.name} 同时存在 @full 和 @size`);
-        }
+        // // 检查冲突
+        // if (obj.comps.full && obj.comps.size) {
+        //     console.warn(`PsdLayer->${obj.name} 同时存在 @full 和 @size`);
+        // }
 
         return obj;
     }

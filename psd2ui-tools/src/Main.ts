@@ -31,6 +31,7 @@ import { exportImageMgr } from './ExportImageMgr';
 import { CCUIOpacity } from './engine/cc/CCUIOpacity';
 import { CCUITransform } from './engine/cc/CCUITransform';
 import { CCVec3 } from './engine/cc/values/CCVec3';
+import { Vec3 } from './values/Vec3';
 
 
 /***
@@ -124,7 +125,7 @@ export class Main {
 
         // 创建缓存文件
         if (args.cache && !fs.existsSync(args.cache)) {
-            writeCache();
+            await writeCache();
         }
 
         // 在没有缓存文件或者 指定重新缓存的时候，读取项目资源
@@ -186,7 +187,7 @@ export class Main {
             console.error(`请设置 --input`);
             return false;
         }
-        
+
         if (!fs.existsSync(args.input)) {
             console.error(`输入路径不存在: ${args.input}`);
             return false;
@@ -278,16 +279,15 @@ export class Main {
 
         // 劫持尺寸设置，使用 psd 中配置的尺寸，这里不对原数据进行修改
         let size = new CCSize(layer.size.width, layer.size.height);
-        if (layer.attr?.comps.size) {
-            let _attrSize = layer.attr.comps.size;
-            size.width = _attrSize.w ?? size.width;
-            size.height = _attrSize.h ?? size.height;
+        // if (layer.attr?.comps.size) {
+        //     let _attrSize = layer.attr.comps.size;
+        //     size.width = _attrSize.w ?? size.width;
+        //     size.height = _attrSize.h ?? size.height;
+        // }
 
-        }
-
-        // 对缩放进行处理
-        size.width = Math.round(Math.abs(size.width / layer.scale.x));
-        size.height = Math.round(Math.abs(size.height / layer.scale.y));
+        // // 对缩放进行处理
+        // size.width = Math.round(Math.abs(size.width / layer.scale.x));
+        // size.height = Math.round(Math.abs(size.height / layer.scale.y));
 
         // 配置的位置 Y 偏移
         let offsetY = 0;
@@ -342,6 +342,18 @@ export class Main {
             } else {
                 // 查找绑定的图像
                 let _layer = imageMgr.getSerialNumberImage(layer);
+
+
+                // 根据原始图片自动计算缩放
+                let scaleX = layer.textureSize.width / _layer.textureSize.width;
+                let scaleY = layer.textureSize.height / _layer.textureSize.height;
+                if (scaleX != 1 || scaleY != 1) {
+                    layer.scale = new Vec3((layer.isFlipX() ? -1 : 1) * scaleX, (layer.isFlipY() ? -1 : 1) * scaleY, 1);
+                    node._trs.setScale(layer.scale.x, layer.scale.y, layer.scale.z);
+                    node._lscale = new CCVec3(layer.scale.x, layer.scale.y, layer.scale.z);
+                }
+
+
                 // 使用已缓存的 图片 的 uuid
                 let imageWarp = imageCacheMgr.get(_layer.md5);
                 sprite.setSpriteFrame(imageWarp ? imageWarp.textureUuid : _layer.textureUuid);
@@ -417,14 +429,14 @@ export class Main {
             }
             console.log(`保存图片 [${_layer.imgName}] md5: ${_layer.md5}`);
             imageWarp && (imageWarp.isOutput = true);
-            let fullpath = path.join(out, `${_layer.imgName}.png`);
-            fs.writeFileSync(fullpath, _layer.imgBuffer);
-            this.saveImageMeta(_layer, fullpath);
+            let fullPath = path.join(out, `${_layer.imgName}.png`);
+            fs.writeFileSync(fullPath, _layer.imgBuffer);
+            this.saveImageMeta(_layer, fullPath);
         });
 
     }
 
-    saveImageMeta(layer: PsdImage, fullpath: string) {
+    saveImageMeta(layer: PsdImage, fullPath: string) {
         let _layer = imageMgr.getSerialNumberImage(layer);
         let imageWarp = imageCacheMgr.get(_layer.md5);
         if (!imageWarp) {
@@ -448,7 +460,7 @@ export class Main {
         meta = meta.replace(/\$BORDER_LEFT/g, s9.l as any);
         meta = meta.replace(/\$BORDER_RIGHT/g, s9.r as any);
 
-        fs.writeFileSync(fullpath + `.meta`, meta);
+        fs.writeFileSync(fullPath + `.meta`, meta);
     }
 
 

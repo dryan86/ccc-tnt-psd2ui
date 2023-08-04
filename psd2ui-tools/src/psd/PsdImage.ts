@@ -42,7 +42,7 @@ export class PsdImage extends PsdLayer {
         this.md5 = fileUtils.getMD5(this.imgBuffer);
 
         this.textureSize = new Size(canvas.width, canvas.height);
-        this.scale = new Vec3((this.isFilpX() ? -1 : 1) * this.scale.x, (this.isFilpY() ? -1 : 1) * this.scale.y, 1);
+        this.scale = new Vec3((this.isFlipX() ? -1 : 1) * this.scale.x, (this.isFlipY() ? -1 : 1) * this.scale.y, 1);
     }
 
     onCtor() {
@@ -64,12 +64,12 @@ export class PsdImage extends PsdLayer {
     }
 
     /** 是否是 x 方向镜像图片 */
-    isFilpX() {
+    isFlipX() {
         return typeof this.attr.comps.flipX?.bind !== 'undefined';
     }
 
     /** 是否是 y 方向镜像图片 */
-    isFilpY() {
+    isFlipY() {
         return typeof this.attr.comps.flipY?.bind !== 'undefined';
     }
 
@@ -89,8 +89,8 @@ export class PsdImage extends PsdLayer {
         // this.position.x  = this.position.x - this.parent.size.width * this.parent.anchorPoint.x + this.size.width * this.anchorPoint.x;
         // this.position.y  = this.position.y - this.parent.size.height * this.parent.anchorPoint.y + this.size.height * this.anchorPoint.y;
         // 如果是镜像图片，则特殊处理
-        let arX = (this.isFilpX() ? (1 - this.anchorPoint.x) : this.anchorPoint.x);
-        let arY = (this.isFilpY() ? (1 - this.anchorPoint.y) : this.anchorPoint.y);
+        let arX = (this.isFlipX() ? (1 - this.anchorPoint.x) : this.anchorPoint.x);
+        let arY = (this.isFlipY() ? (1 - this.anchorPoint.y) : this.anchorPoint.y);
         this.position.x = this.position.x - this.rootDoc.size.width * this.rootDoc.anchorPoint.x + this.size.width * arX;
         this.position.y = this.position.y - this.rootDoc.size.height * this.rootDoc.anchorPoint.y + this.size.height * arY;
     }

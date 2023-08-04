@@ -40,7 +40,7 @@ export class Parser {
                 // Group
                 if (layerType == LayerType.Group) {
                     group = new PsdGroup(source, parent, rootDoc);
-                    if(group.attr.comps.ignorenode || group.attr.comps.ignore){
+                    if (group.attr.comps.ignorenode || group.attr.comps.ignore) {
                         return null;
                     }
                 } else {
@@ -75,7 +75,7 @@ export class Parser {
                 imageMgr.add(image);
 
                 // 没有设置忽略且不说镜像的情况下才进行缓存
-                if (!image.isIgnore() && ! image.isBind()) { 
+                if (!image.isIgnore() && !image.isBind()) {
                     if (!imageCacheMgr.has(image.md5)) {
                         imageCacheMgr.set(image.md5, {
                             uuid: image.uuid,
