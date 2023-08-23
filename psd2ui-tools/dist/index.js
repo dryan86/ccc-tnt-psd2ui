@@ -1022,14 +1022,17 @@
             // 镜像图像管理
             this._imageIdKeyMap = new Map();
             // 当前 psd 所有的图片
-            this._imageArray = new Map();
+            this._imageMapMd5Key = new Map();
+            this._imageMapImgNameKey = new Map();
         }
+        // /** 相同名称不同  md5 图片的后缀id */
+        // private _sameImgNameId: Record<string, number> = {};
         add(psdImage) {
             var _a;
             // 不忽略导出图片
             if (!psdImage.isIgnore() && !psdImage.isBind()) {
-                if (!this._imageArray.has(psdImage.md5)) {
-                    this._imageArray.set(psdImage.md5, psdImage);
+                if (!this._imageMapMd5Key.has(psdImage.md5)) {
+                    this._imageMapMd5Key.set(psdImage.md5, psdImage);
                 }
             }
             if (typeof ((_a = psdImage.attr.comps.img) === null || _a === void 0 ? void 0 : _a.id) != "undefined") {
@@ -1039,9 +1042,33 @@
                 }
                 this._imageIdKeyMap.set(id, psdImage);
             }
+            this.handleSameImgName(psdImage, psdImage.imgName, 0);
+        }
+        /**
+         * 处理相同名称的图片
+         *
+         * @param {PsdImage} psdImage
+         * @param {string} imgName
+         * @param {number} idx
+         * @memberof ImageMgr
+         */
+        handleSameImgName(psdImage, imgName, idx) {
+            if (this._imageMapImgNameKey.has(imgName)) {
+                let _psdImage = this._imageMapImgNameKey.get(imgName);
+                if (_psdImage.md5 != psdImage.md5) {
+                    this.handleSameImgName(psdImage, `${psdImage.imgName}_R${idx}`, idx + 1);
+                }
+                else {
+                    psdImage.imgName = imgName;
+                }
+            }
+            else {
+                psdImage.imgName = imgName;
+                this._imageMapImgNameKey.set(imgName, psdImage);
+            }
         }
         getAllImage() {
-            return this._imageArray;
+            return this._imageMapMd5Key;
         }
         /** 尝试获取有编号的图像图层 */
         getSerialNumberImage(psdImage) {
@@ -1059,7 +1086,7 @@
         }
         clear() {
             this._imageIdKeyMap.clear();
-            this._imageArray.clear();
+            this._imageMapMd5Key.clear();
         }
         static getInstance() {
             if (!this._instance) {
