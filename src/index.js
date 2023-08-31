@@ -8,7 +8,7 @@ const root = path.join(__dirname, "../");
 const projectName = "ccc-tnt-psd2ui";
 let tmpFolder = "";
 let platform = OS.platform() == 'darwin' ? "mac" : "win32";
-let version = "v3.4.+";
+let cocosVersion = "v3.4.+";
 // let tag = "x";
 
 // 排除部分文件或文件夹
@@ -76,15 +76,18 @@ async function taskStart(name) {
     await deleteFile("node_modules");
     await copyNodeModules();
     await deleteFile("@types");
-    await deleteFile("src");
+    if (cocosVersion === "v3.4.+") {
+        await deleteFile("src");
+    }
     await deleteFile("package-lock.json");
+    await reWriteVersion();
     await reWritePackage();
     await copyNodeJS();
     await copyMacSH();
     console.log(`创建完成 ${tmpFolder}`);
 
-    // fs.mkdirsSync(path.join(root, "release"));
-    // zipFolder(tmpFolder, path.join(root, "release", `${name}-${tag}.zip`));
+    //// fs.mkdirsSync(path.join(root, "release"));
+    //// zipFolder(tmpFolder, path.join(root, "release", `${name}-${platform}.zip`));
 }
 
 function copyPlugin(name) {
@@ -115,7 +118,7 @@ function deleteFile(folderName) {
 function copyNodeModules() {
     return new Promise((resolve, reject) => {
         let node_modules = path.join(tmpFolder, "node_modules");
-        fs.copy(path.join(root, "npm-packages", `${platform}-${version}`), node_modules, (err) => {
+        fs.copy(path.join(root, "npm-packages", `${platform}-${cocosVersion}`), node_modules, (err) => {
             err ? reject(err) : resolve();
         });
     })
@@ -145,7 +148,7 @@ function copyMacSH() {
 }
 
 function reWritePackage() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         let packagePath = path.join(tmpFolder, "package.json");
         fs.readJson(packagePath, (err, data) => {
             if (err) {
@@ -153,6 +156,7 @@ function reWritePackage() {
                 return;
             }
             let obj = data;
+            obj.version = pluginVersion;
             delete obj["devDependencies"];
             fs.writeJson(packagePath, obj, {
                 spaces: 4,
@@ -164,6 +168,30 @@ function reWritePackage() {
     })
 }
 
-version = "v3.4.+"
-// version = "v2.4.x"
-taskStart(`${projectName}-${version}`);
+function reWriteVersion() {
+    return new Promise(async (resolve, reject) => {
+        let packagePath = path.join(root, "package.json");
+        fs.readJson(packagePath, (err, data) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            data.version = pluginVersion;
+            fs.writeJson(packagePath, data, {
+                spaces: 4,
+                encoding: 'utf-8'
+            }, (err) => {
+                err ? reject(err) : resolve();
+            });
+        });
+    })
+}
+
+cocosVersion = "v3.4.+"
+//cocosVersion = "v2.4.x"
+
+const pluginVersion = "1.0.0"; // 打包之前记得修改这里的版本号，第三位为只更新lib文件，前两位为更新整个插件。
+
+console.log(`打包版本号为${pluginVersion}\n记得升级版本号~\n版本规则：第三位为只更新lib文件，前两位为更新整个插件。\n调用本脚本时，会自动赋值给插件版本号`);
+
+taskStart(`${projectName}-${cocosVersion}`);

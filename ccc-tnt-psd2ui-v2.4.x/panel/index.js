@@ -58,7 +58,7 @@ Editor.Panel.extend({
                         let outputInput = root.getElementById("output");
                         outputInput.value = str;
                     }
-
+                    Editor.Ipc.sendToMain('ccc-tnt-psd2ui:check-update');
                 },
                 onDragEnter(event) {
                     event.stopPropagation()
@@ -98,14 +98,15 @@ Editor.Panel.extend({
                         // Editor.
                         return;
                     }
-
+                    // 参数参考
+                    // https://www.electronjs.org/docs/latest/api/dialog/#dialogshowopendialogbrowserwindow-options
                     let result = Editor.Dialog.openFile({
-                        'multi': true,
-                        'type': "file",
-                        'filters': [
+                        properties: ['openFile', 'multiSelections'],
+                        type: "file",
+                        filters: [
                             {
-                                'extensions': ["psd"],
-                                'name': "请选择 PSD"
+                                extensions: ["psd"],
+                                name: "请选择 PSD"
                             }
                         ]
                     });
