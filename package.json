@@ -1,17 +1,17 @@
 {
-  "name": "psd2ui-release",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "release24x": "",
-    "release34x": "",
-    "testsh": "node src/test.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "fs-extra": "^11.1.1",
-    "jszip": "^3.10.1"
-  }
+    "name": "ccc-tnt-psd2ui",
+    "version": "0.0.4",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "release24x": "",
+        "release34x": "",
+        "testsh": "node src/test.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "fs-extra": "^11.1.1",
+        "jszip": "^3.10.1"
+    }
 }
