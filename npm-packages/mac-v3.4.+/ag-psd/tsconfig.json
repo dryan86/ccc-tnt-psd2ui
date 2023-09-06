@@ -8,8 +8,14 @@
 		"preserveConstEnums": true,
 		"declaration": true,
 		"useUnknownInCatchVariables": false,
-		"strict": true
+		"strict": true,
+		"sourceMap": true,
+		"sourceRoot": "../src",
+		"outDir": "dist"
 	},
+	"include": [
+		"src/**/*"
+	],
 	"exclude": [
 		"node_modules",
 		"dist"

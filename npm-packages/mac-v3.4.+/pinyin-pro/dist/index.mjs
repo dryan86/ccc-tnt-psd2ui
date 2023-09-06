@@ -563,12 +563,14 @@ const Surnames = {
     哈: 'hǎ',
     言: 'yán',
     福: 'fú',
+    肖: 'xiāo',
 };
 const PatternSurname = Object.keys(Surnames).map((key) => ({
     zh: key,
     pinyin: Surnames[key],
     priority: 99 + key.length,
     length: key.length,
+    isSurname: true,
 }));
 
 const map = {
@@ -6835,7 +6837,7 @@ const DICT2 = {
     晓得: 'xiǎo de',
     变更: 'biàn gēng',
     认得: 'rèn de',
-    苹果: 'pín guǒ',
+    苹果: 'píng guǒ',
     念头: 'niàn tou',
     挣扎: 'zhēng zhá',
     三藏: 'sān zàng',
@@ -8729,6 +8731,7 @@ const DICT2 = {
     种树: 'zhòng shù',
     睡着: 'shuì zháo',
     笼子: 'lóng zi',
+    重启: 'chóng qǐ',
 };
 const Pattern2 = Object.keys(DICT2).map((key) => ({
     zh: key,
@@ -11761,13 +11764,10 @@ class AC {
                 cur.pattern = pattern;
             }
         }
-        this.buildFailPointer();
     }
     // 重新构建树
-    rebuildTrie(patterns) {
+    reset() {
         this.root = new TrieNode();
-        this.buildTrie(patterns);
-        this.buildFailPointer();
     }
     // 构建失败指针
     buildFailPointer() {
@@ -11794,7 +11794,7 @@ class AC {
         }
     }
     // 搜索字符串返回匹配的模式串
-    search(text) {
+    search(text, isSurname = false) {
         let cur = this.root;
         let result = [];
         for (let i = 0; i < text.length; i++) {
@@ -11817,10 +11817,13 @@ class AC {
                 }
             }
         }
-        return this.filter(result);
+        return this.filter(result, isSurname);
     }
     // 去除搜索的重叠字符串，按照优先级保留
-    filter(patterns) {
+    filter(patterns, isSurname = false) {
+        if (!isSurname) {
+            patterns = patterns.filter((pattern) => !pattern.isSurname);
+        }
         const filteredArr = [];
         let prevEndIndex = 0;
         // 按照优先级去除重叠词
@@ -11838,19 +11841,17 @@ class AC {
         return filteredArr;
     }
 }
+// 常规匹配
 const PatternsNormal = [
     ...Pattern5,
     ...Pattern4,
     ...Pattern3,
     ...Pattern2,
+    ...PatternSurname,
 ];
-const PatternsSurname = [...PatternSurname, ...PatternsNormal];
-// 常规匹配
 const ACNormal = new AC();
 ACNormal.buildTrie(PatternsNormal);
-// 姓氏模式匹配
-const ACSurname = new AC();
-ACSurname.buildTrie(PatternsSurname);
+ACNormal.buildFailPointer();
 
 var regex = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
 function getStringLength(string) {
@@ -11874,8 +11875,9 @@ function customPinyin(config = {}) {
         priority: 999 + getStringLength(key),
         length: key.length,
     }));
-    ACNormal.rebuildTrie([...customPatterns, ...PatternsNormal]);
-    ACSurname.rebuildTrie([...customPatterns, ...PatternsSurname]);
+    ACNormal.reset();
+    ACNormal.buildTrie([...PatternsNormal, ...customPatterns]);
+    ACNormal.buildFailPointer();
 }
 const getCustomDict = () => {
     return customDict;
@@ -11891,8 +11893,7 @@ const getSingleWordPinyin = (word) => {
     return pinyin ? pinyin.split(' ')[0] : word;
 };
 const getPinyin = (word, list, mode) => {
-    const ac = mode === 'surname' ? ACSurname : ACNormal; // 选择不同的 AC 自动机
-    const matches = ac.search(word);
+    const matches = ACNormal.search(word, mode === 'surname');
     let matchIndex = 0;
     for (let i = 0; i < word.length;) {
         const match = matches[matchIndex];
