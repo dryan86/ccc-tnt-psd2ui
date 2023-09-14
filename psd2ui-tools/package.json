@@ -7,7 +7,7 @@
     "build": "tsc -b",
     "watch": "tsc -w",
     "rollup": "rollup -c",
-    "test": "ts-node src/index.ts --force-img --input ./test/scale-demo.psd --project-assets ./out/ --cache ./cache/cache.json --output ./out/",
+    "test": "ts-node src/index.ts --engine-version v342 --force-img --input ./test/blank.psd --project-assets ./out/ --cache ./cache/cache.json --output ./out/",
     "help": "node dist/index.js --h",
     "test-init": "node dist/index.js --init --project-assets ./out/ --cache E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\cache\\cache.json",
     "test-png9": "ts-node src/index.ts --engine-version v342 --pinyin --input ./test/png9.psd --output ./out/",

@@ -24,6 +24,9 @@ export class PsdGroup extends PsdLayer {
     }
 
     resize() {
+        if(!this.children.length){
+            return;
+        }
         let left = Number.MAX_SAFE_INTEGER;
         let right = Number.MIN_SAFE_INTEGER;
         let top = Number.MAX_SAFE_INTEGER;
