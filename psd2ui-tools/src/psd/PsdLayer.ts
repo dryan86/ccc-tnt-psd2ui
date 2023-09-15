@@ -112,11 +112,13 @@ export abstract class PsdLayer {
             return;
         }
         let obj: PsdAttr = {
-            name: fragments[0]?.replace(/\.|>|\/|\ /g, "_") ?? "unknow",
+            name: fragments[0]?.trim()?.replace(/\.|>|\/|\ /g, "_") ?? "unknow",
             comps: {},
         }
         for (let i = 1; i < fragments.length; i++) {
-            const fragment = fragments[i].trim();
+            const fragment = this.removeChineseFromEnd(fragments[i].trim()).trim(); // 删除规则尾部的中文
+
+
             let attr = {};
             let startIdx = fragment.indexOf("{");
             let comp = fragment;
@@ -203,7 +205,17 @@ export abstract class PsdLayer {
 
         return obj;
     }
-
+    removeChineseFromEnd(inputString: string): string {
+        const chineseRegex = /[\u4e00-\u9fa5]+$/;
+        const match = inputString.match(chineseRegex);
+    
+        if (match && match[0]) {
+            const chineseLength = match[0].length;
+            return inputString.slice(0, -chineseLength);
+        }
+    
+        return inputString;
+    }
     /** 解析数据 */
     parseSource() {
         let _source = this.source;
