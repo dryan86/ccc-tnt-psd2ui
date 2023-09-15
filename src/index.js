@@ -190,7 +190,7 @@ function reWriteVersion() {
 cocosVersion = "v3.4.+"
 //cocosVersion = "v2.4.x"
 
-const pluginVersion = "1.0.1"; // 打包之前记得修改这里的版本号，第三位为只更新lib文件，前两位为更新整个插件。
+const pluginVersion = "1.0.3"; // 打包之前记得修改这里的版本号，第三位为只更新lib文件，前两位为更新整个插件。
 
 console.log(`打包版本号为${pluginVersion}\n记得升级版本号~\n版本规则：第三位为只更新lib文件，前两位为更新整个插件。\n调用本脚本时，会自动赋值给插件版本号`);
 

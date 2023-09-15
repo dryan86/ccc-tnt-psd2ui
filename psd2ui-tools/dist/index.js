@@ -1256,11 +1256,14 @@
             return obj;
         }
         removeChineseFromEnd(inputString) {
+            if (!inputString) {
+                return inputString;
+            }
             const chineseRegex = /[\u4e00-\u9fa5]+$/;
-            const match = inputString.match(chineseRegex);
+            const match = inputString.trim().match(chineseRegex);
             if (match && match[0]) {
                 const chineseLength = match[0].length;
-                return inputString.slice(0, -chineseLength);
+                return this.removeChineseFromEnd(inputString.slice(0, -chineseLength));
             }
             return inputString;
         }
