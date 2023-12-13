@@ -1549,7 +1549,13 @@
                 }
             }
             this.text = textSource.text;
-            this.fontSize = style.fontSize;
+            // 可能会对文本图层进行缩放，这里计算缩放之后的时机字体大小
+            if (Math.abs(1 - textSource.transform[0]) > 0.001) {
+                this.fontSize = Math.round(style.fontSize * textSource.transform[0] * 100) / 100;
+            }
+            else {
+                this.fontSize = style.fontSize;
+            }
             this.offsetY = config.textOffsetY[this.fontSize] || config.textOffsetY["default"] || 0;
             this.parseSolidFill();
             this.parseStroke();

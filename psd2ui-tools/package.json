@@ -12,6 +12,7 @@
     "test-init": "node dist/index.js --init --project-assets ./out/ --cache E:\\Git\\ccc-framework-3d\\tools\\psd2ui\\cache\\cache.json",
     "test-png9": "ts-node src/index.ts --engine-version v342 --pinyin --input ./test/png9.psd --output ./out/",
     "test-png9-2": "node dist/index.js --engine-version v342 --pinyin --input ./test/png9.psd --output ./out/",
+    "test-dpi": "ts-node src/index.ts --engine-version v342 --pinyin --input ./test/dpi-test.psd --output ./out/",
     "test-same-name": "ts-node src/index.ts --engine-version v342 --pinyin --input ./test/sameName.psd --output ./out/"
   },
   "author": "",
