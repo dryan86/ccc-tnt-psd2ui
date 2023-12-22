@@ -1457,7 +1457,9 @@
                 console.log(`Texture9Utils-> 设置的九宫格 bottom， top 数据不合理，请重新设置`);
                 return _canvas;
             }
-            let newCanvas = canvas__default["default"].createCanvas(Math.min(cw, border.l + border.r + space) || cw, Math.min(ch, border.b + border.t + space) || ch);
+            let imgW = border.l + border.r == 0 ? cw : Math.min(cw, border.l + border.r + space);
+            let imgH = border.b + border.t == 0 ? ch : Math.min(ch, border.b + border.t + space);
+            let newCanvas = canvas__default["default"].createCanvas(imgW, imgH);
             let ctx = newCanvas.getContext("2d");
             // 左上
             ctx.drawImage(_canvas, 0, 0, left + space, top + space, 0, 0, left + space, top + space);

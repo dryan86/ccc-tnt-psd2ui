@@ -40,7 +40,9 @@ export class Texture9Utils {
             return _canvas;
         }
 
-        let newCanvas = canvas.createCanvas(Math.min(cw, border.l + border.r + space) || cw, Math.min(ch, border.b + border.t + space) || ch);
+        let imgW = border.l + border.r == 0 ? cw : Math.min(cw, border.l + border.r + space);
+        let imgH = border.b + border.t == 0 ? ch : Math.min(ch, border.b + border.t + space);
+        let newCanvas = canvas.createCanvas(imgW, imgH);
         let ctx = newCanvas.getContext("2d");
 
         // 左上
