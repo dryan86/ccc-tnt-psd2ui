@@ -13,3 +13,8 @@ node_modules/
 # WebStorm
 #//////////////////////////
 .idea/
+
+
+/psd2ui-tools/out/
+/psd2ui-tools/hawa/
+/psd2ui-tools/hawaout/

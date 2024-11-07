@@ -76,8 +76,8 @@ export class Parser {
 
                 // 没有设置忽略且不说镜像的情况下才进行缓存
                 if (!image.isIgnore() && !image.isBind()) {
-                    if (!imageCacheMgr.has(image.md5)) {
-                        imageCacheMgr.set(image.md5, {
+                    if (!imageCacheMgr.has(image.name)) {
+                        imageCacheMgr.set(image.name, {
                             uuid: image.uuid,
                             textureUuid: image.textureUuid,
                         });

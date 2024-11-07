@@ -13,7 +13,7 @@ import { PsdGroup } from './psd/PsdGroup';
 import { PsdText } from './psd/PsdText';
 import { Color } from './values/Color';
 
-interface TextObject{
+interface TextObject {
     text: string;
     fontSize: number;
     color: string;
@@ -21,22 +21,22 @@ interface TextObject{
     outlineColor?: string;
 }
 
-class ExportImageMgr{
+class ExportImageMgr {
 
     textObjects: TextObject[] = [];
 
-    test(){
+    test() {
         const outDir = path.join(__dirname, "..", "out");
         let psdPath = "./test-img-only/境界奖励-优化.psd";
         this.parsePsd(psdPath, outDir);
     }
 
     async exec(args) {
-         // 检查参数
-         if (!this.checkArgs(args)) {
+        // 检查参数
+        if (!this.checkArgs(args)) {
             return;
         }
-        
+
         // 判断输入是文件夹还是文件
         let stat = fs.lstatSync(args.input);
         let isDirectory = stat.isDirectory();
@@ -106,7 +106,7 @@ class ExportImageMgr{
         fs.emptyDirSync(prefabDir);
         fs.mkdirsSync(textureDir); //创建 图片目录
         await this.saveImage(textureDir);
-        await this.saveTextFile(psdRoot,prefabDir);
+        await this.saveTextFile(psdRoot, prefabDir);
         console.log(`psd2ui ${psdPath} 处理完成`);
 
     }
@@ -128,11 +128,11 @@ class ExportImageMgr{
     }
 
 
-    saveTextFile(psdRoot: PsdDocument,out: string){
-        this.scanText(psdRoot,psdRoot);
-        let textContent = JSON.stringify(this.textObjects,null,2);
+    saveTextFile(psdRoot: PsdDocument, out: string) {
+        this.scanText(psdRoot, psdRoot);
+        let textContent = JSON.stringify(this.textObjects, null, 2);
         let fullpath = path.join(out, `text.txt`);
-        fs.writeFileSync(fullpath, textContent,{encoding: "utf-8"});
+        fs.writeFileSync(fullpath, textContent, { encoding: "utf-8" });
     }
 
     scanText(layer: PsdLayer, psdRoot: PsdDocument) {
@@ -158,9 +158,9 @@ class ExportImageMgr{
     }
 
 
-    private static _instance:ExportImageMgr = null
-    public static getInstance(): ExportImageMgr{
-        if(!this._instance){
+    private static _instance: ExportImageMgr = null
+    public static getInstance(): ExportImageMgr {
+        if (!this._instance) {
             this._instance = new ExportImageMgr();
         }
         return this._instance;

@@ -355,7 +355,7 @@ export class Main {
 
 
                 // 使用已缓存的 图片 的 uuid
-                let imageWarp = imageCacheMgr.get(_layer.md5);
+                let imageWarp = imageCacheMgr.get(_layer.name);
                 sprite.setSpriteFrame(imageWarp ? imageWarp.textureUuid : _layer.textureUuid);
             }
 
@@ -417,17 +417,17 @@ export class Main {
             let _layer = imageMgr.getSerialNumberImage(psdImage);
 
             // 查找已缓存的相同图像
-            let imageWarp = imageCacheMgr.get(_layer.md5);
+            let imageWarp = imageCacheMgr.get(_layer.name);
 
             // 不是强制导出的话，判断是否已经导出过
             if (!this.isForceImg) {
                 // 判断是否已经导出过相同 md5 的资源，不再重复导出
                 if (imageWarp?.isOutput) {
-                    console.log(`已有相同资源，不再导出 [${psdImage.imgName}]  md5: ${psdImage.md5}`);
+                    console.log(`已有相同资源，不再导出 [${psdImage.imgName}]  md5: ${psdImage.name}`);
                     return;
                 }
             }
-            console.log(`保存图片 [${_layer.imgName}] md5: ${_layer.md5}`);
+            console.log(`保存图片 [${_layer.imgName}] md5: ${_layer.name}`);
             imageWarp && (imageWarp.isOutput = true);
             let fullPath = path.join(out, `${_layer.imgName}.png`);
             fs.writeFileSync(fullPath, _layer.imgBuffer);
@@ -438,7 +438,7 @@ export class Main {
 
     saveImageMeta(layer: PsdImage, fullPath: string) {
         let _layer = imageMgr.getSerialNumberImage(layer);
-        let imageWarp = imageCacheMgr.get(_layer.md5);
+        let imageWarp = imageCacheMgr.get(_layer.name);
         if (!imageWarp) {
             imageWarp = _layer;
         }

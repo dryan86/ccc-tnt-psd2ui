@@ -13,7 +13,9 @@
     "test-png9": "ts-node src/index.ts --engine-version v342 --pinyin --input ./test/png9.psd --output ./out/",
     "test-png9-2": "node dist/index.js --engine-version v342 --pinyin --input ./test/png9.psd --output ./out/",
     "test-dpi": "ts-node src/index.ts --engine-version v342 --pinyin --input ./test/dpi-test.psd --output ./out/",
-    "test-same-name": "ts-node src/index.ts --engine-version v342 --pinyin --input ./test/sameName.psd --output ./out/"
+    "test-same-name": "ts-node src/index.ts --engine-version v342 --pinyin --input ./test/sameName.psd --output ./out/ --cache ./cache/cache.json",
+    "hawainit": "ts-node src/index.ts --engine-version v342 --init --project-assets D:/work/rumbleHero/newhawaclient/client/assets/res/textures/ui --cache  ./cache/hawacache.json",
+    "hawatest": "ts-node src/index.ts --engine-version v342 --pinyin --input D:/work/rumbleHero/tokenfightsvn/Art/NewHawa/UIPSD/TopUI.psd --config D:/work/rumbleHero/newhawaclient/psd2ui/cache/psd.config.json --output ./hawaout/ --cache ./cache/hawacache.json"
   },
   "author": "",
   "license": "ISC",
@@ -35,6 +37,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.35.0",
     "ts-node": "^10.9.1",
-    "tslib": "^2.6.0"
+    "tslib": "^2.6.0",
+    "typescript": "^5.6.3"
   }
 }

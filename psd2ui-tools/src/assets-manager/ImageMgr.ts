@@ -20,8 +20,8 @@ class ImageMgr {
     add(psdImage: PsdImage) {
         // 不忽略导出图片
         if (!psdImage.isIgnore() && !psdImage.isBind()) {
-            if (!this._imageMapMd5Key.has(psdImage.md5)) {
-                this._imageMapMd5Key.set(psdImage.md5, psdImage);
+            if (!this._imageMapMd5Key.has(psdImage.name)) {
+                this._imageMapMd5Key.set(psdImage.name, psdImage);
             }
         }
 
@@ -46,7 +46,7 @@ class ImageMgr {
     handleSameImgName(psdImage: PsdImage, imgName: string, idx: number) {
         if (this._imageMapImgNameKey.has(imgName)) {
             let _psdImage = this._imageMapImgNameKey.get(imgName);
-            if (_psdImage.md5 != psdImage.md5) {
+            if (_psdImage.name != psdImage.name) {
                 this.handleSameImgName(psdImage, `${psdImage.imgName}_R${idx}`, idx + 1);
             } else {
                 psdImage.imgName = imgName;
